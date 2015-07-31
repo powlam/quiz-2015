@@ -11,4 +11,6 @@ section,
 footer        { background:#eee; text-align:center; }
 nav span      { margin:0 10px 0 0; }
 
+#ErrorMsg { color:Salmon; font-size:smaller; }
+
 img.author { width:60px; }
