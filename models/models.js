@@ -32,22 +32,19 @@ exports.Quiz = Quiz; //para poderse usar desde otros puntos de la app
 //Inicialización de la BBDD
 sequelize.sync().then( function() {
 	Quiz.count().then( function(count) {
-		if (count < 2) {
-			//Si está vacía, la inicializo
-			Quiz.create(
+		//Si está vacía, la inicializo
+		Quiz.destroy({ truncate: true }).then( function() {
+			Quiz.bulkCreate( [
 				{	pregunta: '¿Capital de Italia?',
 					respuesta: 'Roma',
-					tema: 'humanidades' })
-			.then( function() {
-				console.log('BBDD, pregunta añadida: ¿Capital de Italia?');
-			});
-			Quiz.create(
+					tema: 'humanidades' },
 				{	pregunta: '¿Capital de Portugal?',
 					respuesta: 'Lisboa',
-					tema: 'humanidades' })
+					tema: 'humanidades' }
+			])
 			.then( function() {
 				console.log('BBDD, pregunta añadida: ¿Capital de Portugal?');
 			});
-		}
+		});
 	});
 });
