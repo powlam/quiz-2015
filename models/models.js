@@ -16,7 +16,7 @@ var storage  = process.env.DATABASE_STORAGE;
 // ORM
 var Sequelize = require('sequelize');
 
-//Crear la tabla
+//Crear la BBDD
 var sequelize = new Sequelize(DB_name, user, pwd,
 	{	dialect:protocol,
 		protocol:protocol,
@@ -26,8 +26,19 @@ var sequelize = new Sequelize(DB_name, user, pwd,
 		omitNull:true }  //solo para Postgres
 );
 
-var Quiz = sequelize.import(path.join(__dirname, 'quiz')); //importar info de quiz.js
-exports.Quiz = Quiz; //para poderse usar desde otros puntos de la app
+//Crear las tablas y su relación
+var quiz_path = path.join(__dirname, 'quiz');
+var Quiz = sequelize.import(quiz_path); //importar info de quiz.js
+
+var comment_path = path.join(__dirname, 'comment');
+var Comment = sequelize.import(comment_path); //importar info de quiz.js
+
+Comment.belongsTo(Quiz);
+Quiz.hasMany(Comment);
+
+//para poder usarlos desde otros puntos de la app
+exports.Quiz = Quiz;
+exports.Comment = Comment;
 
 //Inicialización de la BBDD
 sequelize.sync().then( function() {
@@ -43,7 +54,7 @@ sequelize.sync().then( function() {
 					tema: 'humanidades' }
 			])
 			.then( function() {
-				console.log('BBDD, pregunta añadida: ¿Capital de Portugal?');
+				console.log('BBDD inicializada');
 			});
 		});
 	});
