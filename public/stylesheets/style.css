@@ -29,3 +29,6 @@ span.temaPregunta.tecnologia  { color:DodgerBlue; }
 img.author { width:60px; }
 
 .right { float:right; text-align:right; }
+
+.comentario { color:Gray; font-size:smaller; margin-bottom:1em; }
+.comentario .orden { font-weight:bold; }

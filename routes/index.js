@@ -14,6 +14,7 @@ router.get('/', function(req, res) {
 });
 
 router.param('quizId', quizController.load); //Autoload si existe :quizId
+router.param('commentId', commentController.load); //Autoload si existe :commentId
 
 router.get('/quizes',                      quizController.index);
 router.get('/quizes/:quizId(\\d+)',        quizController.show);
@@ -25,10 +26,11 @@ router.get('/quizes/:quizId(\\d+)/edit', sessionController.loginRequired, quizCo
 router.put('/quizes/:quizId(\\d+)',      sessionController.loginRequired, quizController.update);
 router.delete('/quizes/:quizId(\\d+)',   sessionController.loginRequired, quizController.destroy);
 
-router.get('/quizes/:quizId(\\d+)/comments/new', commentController.new);
-router.post('/quizes/:quizId(\\d+)/comments', commentController.create);
+router.get('/quizes/:quizId(\\d+)/comments/new',                                                       commentController.new);
+router.post('/quizes/:quizId(\\d+)/comments',                                                          commentController.create);
+router.put('/quizes/:quizId(\\d+)/comments/:commentId(\\d+)/publish', sessionController.loginRequired, commentController.publish);
 
-router.get('/login', sessionController.new);
+router.get('/login',  sessionController.new);
 router.post('/login', sessionController.create);
 router.get('/logout', sessionController.destroy); //idealmente sería .delete('/login'
 

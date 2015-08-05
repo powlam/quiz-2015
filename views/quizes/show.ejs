@@ -9,6 +9,22 @@
 
     <p><a href='/quizes/<%= quiz.id %>/comments/new'><input type='button' value='Nuevo comentario'/></a></p>
     <p><strong>Comentarios:</strong></p>
-    <% for (index in quiz.Comments) { %>
-    <p class='comentario'>- <%= quiz.Comments[index].texto %></p>
-    <% } %>
+<%  var n = 0;
+    for (index in quiz.Comments) {
+      var mostrar = (quiz.Comments[index].publicado || session.user);
+      if (!mostrar) continue;
+      var conBoton = (session.user && !quiz.Comments[index].publicado);
+      if (conBoton) { %>
+    <form class='comentario' method='post' action='/quizes/<%= quiz.id %>/comments/<%= quiz.Comments[index].id %>/publish?_method=put'>
+<%     } else { %>
+    <p class='comentario'>
+        <span class='orden'><%= ++n %></span>
+<%     } %>
+        <%= quiz.Comments[index].texto %>
+<%     if (conBoton) { %>
+        <input type='submit' value='Publicar'/>
+    </form>
+<%     } else { %>
+    </p>
+<%     }
+    } %>
