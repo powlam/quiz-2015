@@ -47,6 +47,7 @@ exports.create = function(req, res) {
 // GET /logout
 exports.destroy = function(req, res) {
 	delete req.session.user;
+	req.session.errors = {};
 
 	res.redirect(req.session.redir.toString());
 };

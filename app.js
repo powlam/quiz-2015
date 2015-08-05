@@ -35,7 +35,26 @@ app.use(function(req, res, next) {
         req.session.redir = req.path;
     }
 
-    //2: pasar la sesión al res.locals para poderlo usar en las vistas
+    //2: auto-logout tras más de 2 minutos de inactividad
+    if (req.session.user) {
+        var d = new Date();
+        var ahora = d.getTime();
+        if (req.session.horaUltimoAcceso) {
+            var inactividad = ahora-req.session.horaUltimoAcceso;
+            if (inactividad > 120000) {
+                delete req.session.user;
+                delete req.session.horaUltimoAcceso;
+                req.session.errors = [
+                    {   'message': 'Auto-logout ('+Math.round(inactividad/1000)+' segundos de inactividad)' }
+                ];
+                res.redirect('/login');
+                return;
+            }
+        }
+        req.session.horaUltimoAcceso = ahora;
+    }
+
+    //3: pasar la sesión al res.locals para poderlo usar en las vistas
     res.locals.session = req.session;
 
     next();
