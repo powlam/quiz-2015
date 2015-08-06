@@ -16,27 +16,27 @@ exports.index = function(req, res) {
 	var tareasAsync = []; //array de tareas que se realizarán en paralelo
 
 	tareasAsync.push( function(callback) {
-		models.Quiz.count().complete(function(err, count) {
+		models.Quiz.count().then(function(count) {
 		    preguntasTotal = count;
 		    callback(); //tarea terminada!
-		});
+		}).catch( function(err) { callback(); });
 	});
 
 	tareasAsync.push( function(callback) {
-	  	models.Comment.count().complete(function(err, count) {
+	  	models.Comment.count().then(function(count) {
 		    comentariosTotal = count;
 		    callback(); //tarea terminada!
-		});
+		}).catch( function(err) { callback(); });
 	});
 
 	tareasAsync.push( function(callback) {
 	  	models.Quiz.count({ 
 	  		distinct: 'id',
 	  		include: [{ model: models.Comment, required: true}]
-	  	}).complete(function(err, count) {
+	  	}).then(function(count) {
 		    preguntasConComentario = count;
 		    callback(); //tarea terminada!
-	  	});
+		}).catch( function(err) { callback(); });
 	});
 
 	async.parallel(tareasAsync, function() {
