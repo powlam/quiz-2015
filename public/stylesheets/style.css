@@ -30,5 +30,10 @@ img.author { width:60px; }
 
 .right { float:right; text-align:right; }
 
-.comentario { color:Gray; font-size:smaller; margin-bottom:1em; }
+.comentario        { color:Gray; font-size:smaller; margin-bottom:1em; }
 .comentario .orden { font-weight:bold; }
+
+#estadisticas           { margin:0 25%; width:50%; border-collapse:collapse; }
+#estadisticas td        { border-width:1px 0; border-style:solid; border-color:Gray; }
+#estadisticas .numero   { width:20%; text-align:center; font-size:150%; font-weight:bold; }
+#estadisticas .concepto { width:80%; text-align:left; }

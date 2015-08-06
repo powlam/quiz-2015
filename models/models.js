@@ -43,19 +43,23 @@ exports.Comment = Comment;
 //Inicialización de la BBDD
 sequelize.sync().then( function() {
 	Quiz.count().then( function(count) {
-		//Si está vacía, la inicializo
-		Quiz.destroy({ truncate: true }).then( function() {
-			Quiz.bulkCreate( [
-				{	pregunta: '¿Capital de Italia?',
-					respuesta: 'Roma',
-					tema: 'humanidades' },
-				{	pregunta: '¿Capital de Portugal?',
-					respuesta: 'Lisboa',
-					tema: 'humanidades' }
-			])
-			.then( function() {
-				console.log('BBDD inicializada');
+		if (count < 2) {
+			//Si está vacía, la inicializo
+			Quiz.destroy({ truncate: true }).then( function() {
+				Quiz.bulkCreate( [
+					{	pregunta: '¿Capital de Italia?',
+						respuesta: 'Roma',
+						tema: 'humanidades' },
+					{	pregunta: '¿Capital de Portugal?',
+						respuesta: 'Lisboa',
+						tema: 'humanidades' }
+				])
+				.then( function() {
+					console.log('BBDD inicializada');
+				});
 			});
-		});
+
+			Comment.destroy({ truncate: true });
+		}
 	});
 });
